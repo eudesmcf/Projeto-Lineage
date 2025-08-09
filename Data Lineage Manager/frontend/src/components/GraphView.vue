@@ -812,4 +812,6 @@ watch(()=> props.categoryFilter, (val)=>{
 
 /* Simple tooltip via data-tip */
 .mc-btn[data-tip], .mc-select[data-tip] { position:relative; }
-.mc-btn[data-tip]:hover::after, .mc-select[data-tip]:hover::after { content:attr(data-tip); position:absolute; left:50%; bottom:100%; transfo
+.mc-btn[data-tip]:hover::after, .mc-select[data-tip]:hover::after { content:attr(data-tip); position:absolute; left:50%; bottom:100%; transform:translate(-50%, -10px); background:#111827; color:#f1f5f9; font-size:11px; padding:4px 8px; border-radius:6px; white-space:nowrap; box-shadow:0 4px 14px -4px rgba(0,0,0,.45); z-index:9999; pointer-events:none; }
+.mc-btn[data-tip]:hover::before, .mc-select[data-tip]:hover::before { content:''; position:absolute; left:50%; bottom:100%; transform:translate(-50%, -2px); border:6px solid transparent; border-top:0; border-bottom-color:#111827; z-index:9999; }
+</style>

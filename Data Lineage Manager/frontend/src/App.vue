@@ -1,9 +1,20 @@
 <template>
   <div class="layout">
-  <TopBar :categorias="categorias" @change-category="categoriasAtivas = $event" @update-categorias="categorias = $event" />
+  <TopBar
+    :categorias="categorias"
+    :nodeNames="nodeNames"
+    :totalNodes="stats.totalNodes"
+    :visibleNodes="stats.visibleNodes"
+    :selectedNodes="stats.selectedNodes"
+    :totalEdges="stats.totalEdges"
+    :visibleEdges="stats.visibleEdges"
+    :selectedEdges="stats.selectedEdges"
+    @change-category="categoriasAtivas = $event"
+    @update-categorias="onCategoriasUpdated"
+    @focus-node="label => graphRef?.focusNodeByLabel && graphRef.focusNodeByLabel(label)" />
     <div class="content">
   <SidebarLegend :categorias="categorias" :showIcons="showIcons" @toggle-icons="showIcons = !showIcons" />
-  <GraphView :showIcons="showIcons" :categoryFilter="categoriasAtivas" :categorias="categorias" />
+  <GraphView ref="graphRef" :showIcons="showIcons" :categoryFilter="categoriasAtivas" :categorias="categorias" @nodes-loaded="updateNodeNamesFromGraph" @graph-stats="onGraphStats" />
     </div>
   </div>
 </template>
@@ -15,7 +26,28 @@ import SidebarLegend from './components/SidebarLegend.vue';
 import { ref, onMounted } from 'vue';
 import { api } from './services/api';
 
-interface Categoria { nome:string; cor:string; icon?:string }
+const nodeNames = ref<string[]>([]);
+
+function updateNodeNamesFromGraph(nodes: any[]) {
+  const graphLabels = nodes.map(n => n.data && n.data.label ? n.data.label : n.data?.nome || n.id || '');
+  const catExtras = categorias.value.flatMap(c=> [c.nome, c.grupo, c.subcategoria].filter(Boolean) as string[]);
+  const set = new Set<string>();
+  [...graphLabels, ...catExtras].forEach(n=> { const t=n.trim(); if(t) set.add(t); });
+  nodeNames.value = Array.from(set).sort((a,b)=> a.localeCompare(b,'pt-BR'));
+}
+
+let graphRef = ref<any>(null);
+const stats = ref({
+  mode:'global',
+  nodes:0, edges:0,
+  visibleNodes:0, visibleEdges:0,
+  totalNodes:0, totalEdges:0,
+  selectedNodes:0, selectedEdges:0
+});
+
+function onGraphStats(payload:any){ stats.value = { ...stats.value, ...payload }; }
+
+interface Categoria { id?:number; nome:string; cor:string; icon?:string; grupo?:string; subcategoria?:string }
 const defaultCategorias: Categoria[] = [
   { nome:'Bronze', cor:'#8d6e63', icon:'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg>' },
   { nome:'Silver', cor:'#90a4ae', icon:'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>' },
@@ -40,12 +72,36 @@ function mergeDefaults(list:Categoria[]){
 onMounted(async () => {
   try {
     const res = await api.get('/categorias');
-    const backendCats:Categoria[] = res.data.map((c: any) => ({ nome: c.nome || c.Nome, cor: c.cor || c.Cor, icon: undefined }));
-  categorias.value = mergeDefaults(backendCats).sort((a,b)=> a.nome.localeCompare(b.nome,'pt-BR'));
+    const backendCats:Categoria[] = res.data.map((c: any) => ({ id: c.id || c.Id, nome: c.nome || c.Nome, cor: c.cor || c.Cor, icon: undefined, grupo: c.grupo || c.Grupo, subcategoria: c.subcategoria || c.Subcategoria }));
+    categorias.value = mergeDefaults(backendCats).sort((a,b)=> a.nome.localeCompare(b.nome,'pt-BR'));
   } catch (e) {
   categorias.value = mergeDefaults(defaultCategorias).sort((a,b)=> a.nome.localeCompare(b.nome,'pt-BR'));
   }
 });
+
+async function onCategoriasUpdated(list:Categoria[]){
+  // Determine removidos
+  const removed = categorias.value.filter(c=> c.id && !list.some(n=> n.id===c.id));
+  for(const r of removed){
+    try { if(r.id) await api.delete(`/categorias/${r.id}`); } catch {}
+  }
+  for(const c of list){
+    if(!c.id){
+      try {
+        const payload = { nome:c.nome, cor:c.cor, grupo:c.grupo, subCategoria:c.subcategoria };
+        const res = await api.post('/categorias', payload);
+        c.id = res.data.id || res.data.Id;
+      } catch {}
+    } else {
+      try {
+        await api.put(`/categorias/${c.id}`, { id:c.id, nome:c.nome, cor:c.cor, grupo:c.grupo, subCategoria:c.subcategoria });
+      } catch {}
+    }
+  }
+  categorias.value = list.sort((a,b)=> a.nome.localeCompare(b.nome,'pt-BR'));
+  // refresh search names
+  updateNodeNamesFromGraph((graphRef.value?.getCurrentNodes && graphRef.value.getCurrentNodes()) || []);
+}
 </script>
 
 <style scoped>

@@ -25,6 +25,8 @@ public class AppDbContext : DbContext
         builder.HasKey(c => c.Id);
         builder.Property(c => c.Nome).IsRequired().HasMaxLength(100);
         builder.Property(c => c.Cor).IsRequired().HasMaxLength(20);
+    builder.Property(c => c.Grupo).HasMaxLength(100);
+    builder.Property(c => c.SubCategoria).HasMaxLength(100);
     }
 
     private void ConfigureArtefato(EntityTypeBuilder<Artefato> builder)

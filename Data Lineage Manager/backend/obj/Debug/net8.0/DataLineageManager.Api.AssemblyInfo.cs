@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DataLineageManager.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca9360b985d54eb63d9dd0aa41d377ba124cbf8f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec64bf8bd218b571a41a8a68da1cb440d5801bfd")]
 [assembly: System.Reflection.AssemblyProductAttribute("DataLineageManager.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DataLineageManager.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

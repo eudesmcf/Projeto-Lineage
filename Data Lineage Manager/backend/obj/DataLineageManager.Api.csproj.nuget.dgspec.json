@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj": {}
+    "e:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj": {}
   },
   "projects": {
-    "E:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj": {
+    "e:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj",
+        "projectUniqueName": "e:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj",
         "projectName": "DataLineageManager.Api",
-        "projectPath": "E:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj",
+        "projectPath": "e:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj",
         "packagesPath": "C:\\Users\\Eudes\\.nuget\\packages\\",
-        "outputPath": "E:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\obj\\",
+        "outputPath": "e:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

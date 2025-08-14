@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Lb2lArFoHEI=",
+  "dgSpecHash": "Te5VYbPhEsk=",
   "success": true,
-  "projectFilePath": "E:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj",
+  "projectFilePath": "e:\\Bibliotecas\\Eudes\\Área de Trabalho\\Projeto Lineage\\Data Lineage Manager\\backend\\DataLineageManager.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Eudes\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Eudes\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

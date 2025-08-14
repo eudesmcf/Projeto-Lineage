@@ -11,10 +11,11 @@
     :selectedEdges="stats.selectedEdges"
     @change-category="categoriasAtivas = $event"
     @update-categorias="onCategoriasUpdated"
-    @focus-node="label => graphRef?.focusNodeByLabel && graphRef.focusNodeByLabel(label)" />
+    @focus-node="label => graphRef?.focusNodeByLabel && graphRef.focusNodeByLabel(label)"
+    @toggle-info="toggleInfoPanel" />
     <div class="content">
-  <SidebarLegend :categorias="categorias" :showIcons="showIcons" @toggle-icons="showIcons = !showIcons" />
-  <GraphView ref="graphRef" :showIcons="showIcons" :categoryFilter="categoriasAtivas" :categorias="categorias" @nodes-loaded="updateNodeNamesFromGraph" @graph-stats="onGraphStats" />
+  <GraphView ref="graphRef" :showIcons="showIcons" :categoryFilter="categoriasAtivas" :categorias="categorias" @nodes-loaded="updateNodeNamesFromGraph" @graph-stats="onGraphStats" @category-counts="updateCategoryCounts" />
+  <CategoryTreePanel :visible="infoVisible" :x="infoPos.x" :y="infoPos.y" :categorias="categorias" :counts="categoryCounts" @close="infoVisible=false" @focus-categoria="focusCategoria" />
     </div>
   </div>
 </template>
@@ -22,11 +23,14 @@
 <script setup lang="ts">
 import TopBar from './components/TopBar.vue';
 import GraphView from './components/GraphView.vue';
-import SidebarLegend from './components/SidebarLegend.vue';
+import CategoryTreePanel from './components/CategoryTreePanel.vue';
 import { ref, onMounted } from 'vue';
 import { api } from './services/api';
 
 const nodeNames = ref<string[]>([]);
+const categoryCounts = ref<Record<string, number>>({});
+const infoVisible = ref(false);
+const infoPos = ref({ x: 260, y: 70 });
 
 function updateNodeNamesFromGraph(nodes: any[]) {
   const graphLabels = nodes.map(n => n.data && n.data.label ? n.data.label : n.data?.nome || n.id || '');
@@ -46,6 +50,10 @@ const stats = ref({
 });
 
 function onGraphStats(payload:any){ stats.value = { ...stats.value, ...payload }; }
+// Receber contagens do GraphView (já emit via category-counts se for necessário – adicionar listener no componente GraphView se ainda não)
+function updateCategoryCounts(counts:Record<string,number>){ categoryCounts.value = counts; }
+function toggleInfoPanel(){ infoVisible.value = !infoVisible.value; }
+function focusCategoria(nome:string){ categoriasAtivas.value = [nome]; }
 
 interface Categoria { id?:number; nome:string; cor:string; icon?:string; grupo?:string; subcategoria?:string }
 const defaultCategorias: Categoria[] = [
@@ -110,11 +118,7 @@ async function onCategoriasUpdated(list:Categoria[]){
   flex-direction: column;
   height: 100vh;
 }
-.content {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-}
+.content { flex:1; display:flex; overflow:hidden; }
 </style>
 <style>
 /* Toast progress bar (barra física) */

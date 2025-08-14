@@ -16,6 +16,18 @@
       <div class="actions">
         <Button size="small" label="Add TMDL" icon="pi pi-plus" class="act" outlined />
         <Button size="small" label="Export" icon="pi pi-upload" class="act" outlined />
+        <!-- Botão Info reforçado (label visível) -->
+        <Button
+          size="small"
+          label="Info"
+          icon="pi pi-info-circle"
+          class="act info-btn"
+          outlined
+          @click="emit('toggle-info')"
+          @keydown.enter.prevent="emit('toggle-info')"
+          aria-label="Abrir painel de grupos e categorias"
+          v-tooltip.bottom="'Grupos & Categorias'"
+        />
       </div>
     </div>
     <div class="tb-meta">
@@ -133,7 +145,7 @@ const props = defineProps<{
   totalNodes?: number; visibleNodes?: number; selectedNodes?: number;
   totalEdges?: number; visibleEdges?: number; selectedEdges?: number;
 }>();
-const emit = defineEmits(['change-category','update-categorias','focus-node']);
+const emit = defineEmits(['change-category','update-categorias','focus-node','toggle-info']);
 
 // contadores dinâmicos vindos do GraphView via props
 const measures = computed(()=> props.visibleNodes ?? 0);

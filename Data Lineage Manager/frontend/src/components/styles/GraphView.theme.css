@@ -1,0 +1,4 @@
+.dlm-theme-toggle { position:absolute; top:12px; left:12px; z-index:5001; }
+.dlm-dark .dlm-card { box-shadow:0 2px 4px -1px rgba(0,0,0,.6),0 1px 2px -1px rgba(0,0,0,.4); }
+.dlm-dark .mini-controls, .dlm-dark .mini-controls-alt .mc-btn { background:rgba(30,41,59,0.9); color:#e2e8f0; border-color:#334155; }
+.dlm-dark .mini-controls .mc-btn:hover, .dlm-dark .mini-controls-alt .mc-btn:hover { background:#1e293b; }
